@@ -37,7 +37,7 @@ class Player(Unit):
                 frames.append(pygame.transform.scale(frame, (80, 80)))  # Resize if needed
         return frames
 
-    def handle_attacks(self):
+    def trigger_sword_attack(self):
         if self._attack_duration <= 0:
             self._attack_cooldown -= 10
         self._attack_duration -= 10
@@ -54,13 +54,16 @@ class Player(Unit):
             if direction.length() != 0:
                 direction = direction.normalize()
 
-            attack_length = direction * self.ATTACK_RANGE
+            attack_length = direction * self.ATTACK_RANGE 
             attack_end = self._pos + attack_length
             
             pygame.draw.line(self._screen, "yellow", self._pos, attack_end, 5)
 
             self._attack_duration -= 10
             return attack_end
+    
+    def trigger_sphere_attack(self):
+        ...
        
 
         

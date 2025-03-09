@@ -1,7 +1,13 @@
+import argparse
+
 from game import Game
 
 def main():
-    game = Game()
+    parser = argparse.ArgumentParser(description="Run game")
+    parser.add_argument("-f", "--fullscreen", action="store_true", help="Enable fullscreen mode")
+    args = parser.parse_args()
+    
+    game = Game(fullscreen=args.fullscreen)
     game.run()
     
 

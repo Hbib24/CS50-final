@@ -7,9 +7,14 @@ from ui import UI
 class Game:
     _dt = 0
 
-    def __init__(self):
+    def __init__(self, fullscreen=False):
         pygame.init()
-        self._screen = pygame.display.set_mode((1280, 720))
+
+        flags = 0
+        if fullscreen:
+            flags = pygame.FULLSCREEN
+
+        self._screen = pygame.display.set_mode((1280, 720), flags=flags)
         self._clock = pygame.time.Clock()
         self._timer = 0
         self._score = 0 # score = mob kill count
@@ -19,7 +24,6 @@ class Game:
         self._player = Player(self._screen)
 
     def init_mob_generator(self):
-        # Create MobGenerator with the player, screen, and spawn interval
         self._mob_generator = MobSpawner(self._screen, self._player)
     
     def init_ui(self):
@@ -46,16 +50,24 @@ class Game:
 
             # fill the screen with a color to wipe away anything from last frame
             self._screen.fill("gray")
+
             # ================= GAME LOGIC =================== #
             if self._player.is_dead:
                 self._ui.display_game_over(self._timer, self._score)
                 pygame.display.flip()
+
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_r]:
+                    self.run()
+                elif keys[pygame.K_q]:
+                    pygame.quit()
+                    
             else:
                 self._ui.draw(self._timer, self._level, self._score) 
 
                 self._player.handle_movement()
                 self._player.draw()
-                attack_pos = self._player.handle_attacks()
+                attack_pos = self._player.trigger_sword_attack()
 
                 self._mob_generator.update(self._dt, self.increment_level, self.increment_score, attack_pos)
                 self._mob_generator.draw_mobs(self._dt)
