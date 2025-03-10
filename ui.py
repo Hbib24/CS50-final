@@ -43,6 +43,15 @@ class UI:
 
         score_text = self._font.render(f"Score: {score}", True, (255, 255, 255))
         self._screen.blit(score_text, (self._screen.get_width() - 400, 20)) 
+        
+    def display_pause_menu(self):
+        font = pygame.font.SysFont('Arial', 50)
+        pause_text = font.render('Game Paused', True, (255, 0, 0))
+        restart_text = font.render('Press R to Restart or Q to Quit', True, (255, 255, 255))
+
+        self._screen.fill((0, 0, 0)) 
+        self._screen.blit(pause_text, (self._screen.get_width() // 2 - pause_text.get_width() // 2, self._screen.get_height() // 2 - 100))
+        self._screen.blit(restart_text, (self._screen.get_width() // 2 - restart_text.get_width() // 2, self._screen.get_height() // 2 + 50))
 
     def get_formatted_timer(self, timer):
         minutes = int(timer // 60)

@@ -19,6 +19,7 @@ class Game:
         self._timer = 0
         self._score = 0 # score = mob kill count
         self._level = 1 # each level has increased mob spawn frequency
+        self._paused = False
 
     def init_player(self):
         self._player = Player(self._screen)
@@ -50,19 +51,29 @@ class Game:
 
             # fill the screen with a color to wipe away anything from last frame
             self._screen.fill("gray")
+            
 
             # ================= GAME LOGIC =================== #
+            
+            keys = pygame.key.get_pressed()
+
+            if keys[pygame.K_ESCAPE]:
+                self._paused = not self._paused
+            if keys[pygame.K_r]:
+                self.run()
+            if keys[pygame.K_q]:
+                pygame.quit()
+                
             if self._player.is_dead:
                 self._ui.display_game_over(self._timer, self._score)
                 pygame.display.flip()
 
-                keys = pygame.key.get_pressed()
-                if keys[pygame.K_r]:
-                    self.run()
-                elif keys[pygame.K_q]:
-                    pygame.quit()
+
                     
-            else:
+            elif self._paused:
+                self._ui.display_pause_menu()
+                    
+            elif not self._paused:
                 self._ui.draw(self._timer, self._level, self._score) 
 
                 self._player.handle_movement()
