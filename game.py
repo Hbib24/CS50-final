@@ -12,6 +12,7 @@ class Game:
         self._running = True
         self._paused = False
         self._dt = 0
+        self._timer = 0 # in seconds
         self._player = Player(self._screen)
         self._mob = BasicMob(self._screen)
 
@@ -39,7 +40,7 @@ class Game:
 
             # flip() the display to put your work on screen
             pygame.display.flip()
-
+            print(self._clock.get_time() * 60)
             self._dt = self._clock.tick(60) / 1000  # limits FPS to 60
 
         pygame.quit()

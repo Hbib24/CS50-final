@@ -14,7 +14,7 @@ class Unit(pygame.sprite.Sprite):
         new_size = (int(size[0] * scale_factor), int(size[1] * scale_factor))
         
         self._image = pygame.transform.smoothscale(self._image, new_size)
-        self.rect = self._image.get_rect(topleft=pos)
+        self.hitbox = self._image.get_rect(topleft=pos)
 
     def move(self, dx, dy):
         if dx > 0:
@@ -22,14 +22,18 @@ class Unit(pygame.sprite.Sprite):
         elif dx < 0:
             self._image_flipped = True
         
-        self.rect.x += dx * self._speed
-        self.rect.y += dy * self._speed
+        self.hitbox.x += dx * self._speed
+        self.hitbox.y += dy * self._speed
 
     def take_damage(self, amount):
-        self._current_health -= amount      
+        self._current_health -= amount  
+        return self._current_health    
     
     def get_pos(self):
-        return pygame.Vector2(self.rect.topleft)
+        return pygame.Vector2(self.hitbox.topleft)
+    
+    def collides_with(self, hitbox):
+        return self.hitbox.colliderect(hitbox)
 
     @property
     def is_dead(self):
@@ -43,6 +47,6 @@ class Unit(pygame.sprite.Sprite):
     def update(self, screen: pygame.Surface):
         image = pygame.transform.flip(self._image, True, False) if self._image_flipped else self._image
         
-        screen.blit(image, self.rect.topleft)
-        pygame.draw.rect(screen, "red", self.rect, 1)
+        screen.blit(image, self.hitbox.topleft)
+        pygame.draw.rect(screen, "red", self.hitbox, 1)
         

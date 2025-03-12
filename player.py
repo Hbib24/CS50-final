@@ -4,10 +4,11 @@ from unit import Unit
 
 class Player(Unit):
     def __init__(self, screen: pygame.Surface):
-        pos = (screen.get_width() // 2, screen.get_height() // 2)
+        pos = (screen.get_width() // 2, screen.get_height() // 2) # center of the screen
         super().__init__(pos, speed=5, image_path="assets/player/player.png", scale_factor=1.5)
         
         self.screen = screen
+        self.level = 1
         
     def handle_movement(self):
         keys = pygame.key.get_pressed()
