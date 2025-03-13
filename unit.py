@@ -9,6 +9,7 @@ class Unit(pygame.sprite.Sprite):
         self._speed = speed
         self._image = pygame.image.load(image_path).convert_alpha()
         self._image_flipped = False
+        self._attacks = []
 
         size = self._image.get_size()
         new_size = (int(size[0] * scale_factor), int(size[1] * scale_factor))
@@ -18,9 +19,9 @@ class Unit(pygame.sprite.Sprite):
 
     def move(self, dx, dy):
         if dx > 0:
-            self._image_flipped = False
-        elif dx < 0:
             self._image_flipped = True
+        elif dx < 0:
+            self._image_flipped = False
         
         self.hitbox.x += dx * self._speed
         self.hitbox.y += dy * self._speed
@@ -34,6 +35,10 @@ class Unit(pygame.sprite.Sprite):
     
     def collides_with(self, hitbox):
         return self.hitbox.colliderect(hitbox)
+    
+    def add_attack(self, attack):
+        self._attacks.append(attack)
+        
 
     @property
     def is_dead(self):
@@ -48,5 +53,10 @@ class Unit(pygame.sprite.Sprite):
         image = pygame.transform.flip(self._image, True, False) if self._image_flipped else self._image
         
         screen.blit(image, self.hitbox.topleft)
-        pygame.draw.rect(screen, "red", self.hitbox, 1)
+        pygame.draw.rect(screen, "blue", self.hitbox, 1)
+        
+        current_time = pygame.time.get_ticks()
+        for attack in self._attacks:
+            attack.update(current_time, screen)
+            
         

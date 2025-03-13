@@ -3,11 +3,11 @@ import random
 
 from unit import Unit
 
-
 class BasicMob(Unit):
     def __init__(self, screen: pygame.Surface):
         self.screen = screen
-        super().__init__(self.get_random_pos(), speed=self.get_random_speed(), image_path="assets/mobs/basic_mob.gif", scale_factor=2)
+        super().__init__(self.get_random_pos(), speed=self.get_random_speed(), image_path="assets/mobs/basic_mob.png", scale_factor=1.5)
+        
         
     def get_random_speed(self) -> float:
         return random.uniform(1.5, 2.5)
