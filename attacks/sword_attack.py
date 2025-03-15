@@ -1,7 +1,7 @@
 import pygame
 
 from unit import Unit
-from attack import Attack
+from attacks.attack import Attack
 
 class SwordAttack(Attack):
     def __init__(self, owner: Unit, targets: tuple, duration=400, damage=5):
@@ -34,9 +34,8 @@ class SwordAttack(Attack):
             image = pygame.transform.flip(self.image, True, False) if self.owner._image_flipped else self.image
             
             game._screen.blit(image, self.hitbox.topleft)
-            pygame.draw.rect(game._screen, "red", self.hitbox, 1)  # Debug hitbox
+            # pygame.draw.rect(game._screen, "red", self.hitbox, 1) 
 
-            # Check for collision with targets
             for target in self.targets:
                 if self.hitbox.colliderect(target.hitbox):
                     target.take_damage(self.damage)

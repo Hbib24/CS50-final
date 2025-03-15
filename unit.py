@@ -53,7 +53,7 @@ class Unit(pygame.sprite.Sprite):
         image = pygame.transform.flip(self._image, True, False) if self._image_flipped else self._image
         
         screen.blit(image, self.hitbox.topleft)
-        pygame.draw.rect(screen, "blue", self.hitbox, 1)
+        # pygame.draw.rect(screen, "blue", self.hitbox, 1)
         
         current_time = pygame.time.get_ticks()
         for attack in self._attacks:

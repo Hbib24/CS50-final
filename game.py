@@ -1,9 +1,10 @@
 import pygame
 
 from player import Player
-from basic_mob import BasicMob
+from mobs.basic_mob import BasicMob
 from attacks.proximity_attack import ProximityAttack
 from attacks.sword_attack import SwordAttack
+from ui import UI
 
 class Game:
     def __init__(self, fullscreen=False):
@@ -13,11 +14,15 @@ class Game:
         self._clock = pygame.time.Clock()
         self._running = True
         self._paused = False
+        self._over = False
         self._dt = 0
+        self._score = 0
         self._timer = 0 # in seconds
         self._player = Player(self._screen)
         self._mob = BasicMob(self._screen)
         self._swordAttack = SwordAttack(self._player, (self._mob,))
+        self._proxAttack = ProximityAttack(self._mob, (self._player,))
+        self._ui = UI()
 
     def run(self):
         while self._running:
@@ -36,11 +41,15 @@ class Game:
             if keys[pygame.K_ESCAPE]:
                 self._paused = not self._paused
             
-            if not self._paused:
+            if not self._paused and not self._over:
                 self._player.update(self)
-                self._swordAttack.update(self)
                 if not self._mob.is_dead:
                     self._mob.update(self)
+                self._swordAttack.update(self)
+                self._proxAttack.update(self)
+
+                self._ui.display_game_ui(self)
+
 
 
             # flip() the display to put your work on screen

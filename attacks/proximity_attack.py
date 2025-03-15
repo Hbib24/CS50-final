@@ -1,10 +1,12 @@
-from attack import Attack
+from attacks.attack import Attack
 from unit import Unit
 
 class ProximityAttack(Attack):
-    def __init__(self, owner: Unit, target: Unit, cooldown=500, damage=10):
-        super().__init__(owner, target, cooldown, damage)
+    def __init__(self, owner: Unit, targets: tuple, duration=500):
+        super().__init__(owner, targets, duration)
 
-    def trigger(self, screen):
-        if self.owner.collides_with(self.target.hitbox):
-            self.target.take_damage(self.damage)
+    def update(self, game):
+        if self.can_attack():
+            for target in self.targets:
+                if self.owner.hitbox.colliderect(target.hitbox):
+                    target.take_damage(self.damage)
