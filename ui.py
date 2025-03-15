@@ -27,11 +27,17 @@ class UI:
 
         # score
         score = self.font.render(f"{game._score}", True, (255, 255, 255))
-        screen.blit(self.skull_icon, (screen_width - 150, 20))
-        screen.blit(score, (screen_width - 110, 25))
+        screen.blit(self.skull_icon, (screen_width - 250, 20))
+        screen.blit(score, (screen_width - 200, 25))
 
         # time
         elapsed_time = pygame.time.get_ticks() // 1000
-        time = self.font.render(f"{elapsed_time}", True, (255, 255, 255))
-        screen.blit(self.time_icon, (screen_width - 70, 20))
-        screen.blit(time, (screen_width - 40, 25))
+        time = self.font.render(f"{self.get_formatted_time(elapsed_time)}", True, (255, 255, 255))
+        screen.blit(self.time_icon, (screen_width - 150, 20))
+        screen.blit(time, (screen_width - 100, 25))
+
+    def get_formatted_time(self, time):
+        minutes = int(time // 60)
+        seconds = int(time % 60)
+
+        return f'{minutes:02}:{seconds:02}'
