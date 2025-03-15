@@ -21,7 +21,7 @@ class Game:
         self._player = Player(self._screen)
         self._player.add_attack(SwordAttack(self._player, []))
         self._mob_manager = MobManager()
-        self._ui = UI()
+        self._ui = UI(self._screen)
 
     def run(self):
         while self._running:
