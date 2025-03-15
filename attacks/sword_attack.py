@@ -4,7 +4,7 @@ from unit import Unit
 from attacks.attack import Attack
 
 class SwordAttack(Attack):
-    def __init__(self, owner: Unit, targets: tuple, duration=400, damage=5):
+    def __init__(self, owner: Unit, targets: list, duration=400, damage=5):
         super().__init__(owner, targets, duration, damage)
         
         self.image = pygame.image.load("assets/attacks/sword.png").convert_alpha()
@@ -34,11 +34,11 @@ class SwordAttack(Attack):
             image = pygame.transform.flip(self.image, True, False) if self.owner._image_flipped else self.image
             
             game._screen.blit(image, self.hitbox.topleft)
-            # pygame.draw.rect(game._screen, "red", self.hitbox, 1) 
 
             for target in self.targets:
-                if self.hitbox.colliderect(target.hitbox):
+                if not target.is_dead and self.hitbox.colliderect(target.hitbox):
                     target.take_damage(self.damage)
+                    pygame.draw.rect(game._screen, "red", target.hitbox, 1) 
         else:
             # Reset attack when the duration has passed
             self.last_attack_time = 0

@@ -23,10 +23,12 @@ class UI:
 
         hp_percentage = game._player.health / game._player._max_health
         current_hp_width = int(200 * hp_percentage)
+        hp = self.font.render(f"{game._player.health}", True, (255, 255, 255))
         pygame.draw.rect(screen, (0, 200, 0), (60, 25, current_hp_width, 20))
+        screen.blit(hp, (65, 25))
 
         # score
-        score = self.font.render(f"{game._score}", True, (255, 255, 255))
+        score = self.font.render(f"{game._mob_manager.dead_mobs_count}", True, (255, 255, 255))
         screen.blit(self.skull_icon, (screen_width - 250, 20))
         screen.blit(score, (screen_width - 200, 25))
 

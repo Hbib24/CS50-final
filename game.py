@@ -1,5 +1,6 @@
 import pygame
 
+from mobs.mob_manager import MobManager
 from player import Player
 from mobs.basic_mob import BasicMob
 from attacks.proximity_attack import ProximityAttack
@@ -16,12 +17,10 @@ class Game:
         self._paused = False
         self._over = False
         self._dt = 0
-        self._score = 0
         self._timer = 0 # in seconds
         self._player = Player(self._screen)
-        self._mob = BasicMob(self._screen)
-        self._swordAttack = SwordAttack(self._player, (self._mob,))
-        self._proxAttack = ProximityAttack(self._mob, (self._player,))
+        self._player.add_attack(SwordAttack(self._player, []))
+        self._mob_manager = MobManager()
         self._ui = UI()
 
     def run(self):
@@ -43,10 +42,7 @@ class Game:
             
             if not self._paused and not self._over:
                 self._player.update(self)
-                if not self._mob.is_dead:
-                    self._mob.update(self)
-                self._swordAttack.update(self)
-                self._proxAttack.update(self)
+                self._mob_manager.spawn_basics(self)
 
                 self._ui.display_game_ui(self)
 

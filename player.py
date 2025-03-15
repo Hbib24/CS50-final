@@ -24,5 +24,5 @@ class Player(Unit):
     # will be called each frame
     def update(self, game):
         self.handle_movement()
-        super().update(self.screen)
+        super().update(game)
         

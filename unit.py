@@ -49,14 +49,12 @@ class Unit(pygame.sprite.Sprite):
         return self._current_health
     
     # will be called each frame
-    def update(self, screen: pygame.Surface):
+    def update(self, game):
         image = pygame.transform.flip(self._image, True, False) if self._image_flipped else self._image
         
-        screen.blit(image, self.hitbox.topleft)
-        # pygame.draw.rect(screen, "blue", self.hitbox, 1)
-        
-        current_time = pygame.time.get_ticks()
+        game._screen.blit(image, self.hitbox.topleft)
+
         for attack in self._attacks:
-            attack.update(current_time, screen)
+            attack.update(game)
             
         

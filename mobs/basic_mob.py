@@ -34,5 +34,5 @@ class BasicMob(Unit):
     # will be called each frame
     def update(self, game):
         self.handle_movement(game._player.get_pos())
-        super().update(self.screen)
+        super().update(game)
         
