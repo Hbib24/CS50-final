@@ -3,7 +3,7 @@ import pygame
 from player import Player
 from basic_mob import BasicMob
 from attacks.proximity_attack import ProximityAttack
-from attacks.slash_attack import SlashAttack
+from attacks.sword_attack import SwordAttack
 
 class Game:
     def __init__(self, fullscreen=False):
@@ -17,7 +17,7 @@ class Game:
         self._timer = 0 # in seconds
         self._player = Player(self._screen)
         self._mob = BasicMob(self._screen)
-        self._slashAttack = SlashAttack(self._player, (self._mob,))
+        self._swordAttack = SwordAttack(self._player, (self._mob,))
 
     def run(self):
         while self._running:
@@ -38,7 +38,7 @@ class Game:
             
             if not self._paused:
                 self._player.update(self)
-                self._slashAttack.update(self)
+                self._swordAttack.update(self)
                 if not self._mob.is_dead:
                     self._mob.update(self)
 
