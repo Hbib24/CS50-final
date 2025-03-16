@@ -4,8 +4,8 @@ from unit import Unit
 from attacks.attack import Attack
 
 class SwordAttack(Attack):
-    def __init__(self, owner: Unit, targets: list, duration=400, damage=5):
-        super().__init__(owner, targets, duration, damage)
+    def __init__(self, owner: Unit, targets: list, duration=400, damage=5, cooldown=1500):
+        super().__init__(owner, targets, cooldown, damage, duration)
         
         self.image = pygame.image.load("assets/attacks/sword.png").convert_alpha()
         self.hitbox = self.image.get_rect()
@@ -22,23 +22,17 @@ class SwordAttack(Attack):
         
 
     def update(self, game):
-        time = pygame.time.get_ticks()
-        keys = pygame.key.get_pressed()
-        
-        if keys[pygame.K_SPACE] and self.last_attack_time == 0:
-            self.last_attack_time = time
 
-        # If the attack has been triggered and within the duration window, it's active
-        if self.last_attack_time != 0 and time - self.last_attack_time < self.duration:
+        if self.can_attack():
+            self.attack()  
+
+        if self.is_attacking():
             self.update_pos()
             image = pygame.transform.flip(self.image, True, False) if self.owner._image_flipped else self.image
-            
             game._screen.blit(image, self.hitbox.topleft)
 
             for target in self.targets:
                 if not target.is_dead and self.hitbox.colliderect(target.hitbox):
                     target.take_damage(self.damage)
-                    pygame.draw.rect(game._screen, "red", target.hitbox, 1) 
-        else:
-            # Reset attack when the duration has passed
-            self.last_attack_time = 0
+                    pygame.draw.rect(game._screen, "red", target.hitbox, 1)  # Debug hitbox
+

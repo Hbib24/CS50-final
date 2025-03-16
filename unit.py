@@ -27,7 +27,11 @@ class Unit(pygame.sprite.Sprite):
         self.hitbox.y += dy * self._speed
 
     def take_damage(self, amount):
-        self._current_health -= amount  
+        if self._current_health - amount < 0:
+            self._current_health = 0
+        else:
+            self._current_health -= amount  
+
         return self._current_health    
     
     def get_pos(self):

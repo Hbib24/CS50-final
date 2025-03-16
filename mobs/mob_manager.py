@@ -1,6 +1,7 @@
 import random
 import pygame
 from attacks.proximity_attack import ProximityAttack
+from event_manager import Event
 from mobs.basic_mob import BasicMob
 
 class MobManager:
@@ -27,6 +28,7 @@ class MobManager:
             if mob.is_dead:
                 self.active_mobs.pop(i)
                 self.dead_mobs_count += 1
+                game._event_manager.post_event(Event.MOB_KILL)
                 pass
 
             mob.update(game)

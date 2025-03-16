@@ -9,6 +9,8 @@ class Player(Unit):
         
         self.screen = screen
         self.level = 1
+        self.experience = 0
+        self.levelup_experience = 100 # required experience for lvl up
         
     def handle_movement(self):
         keys = pygame.key.get_pressed()
@@ -23,6 +25,9 @@ class Player(Unit):
             
     # will be called each frame
     def update(self, game):
+        if self.is_dead:
+            game._over = True
+
         self.handle_movement()
         super().update(game)
         
