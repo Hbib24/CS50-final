@@ -16,9 +16,9 @@ class SwordAttack(Attack):
         if self.owner._image_flipped:
             self.hitbox.x = owner_pos.x + 50
         else:
-            self.hitbox.x = owner_pos.x - self.owner.hitbox.width - 50
+            self.hitbox.x = owner_pos.x - self.owner._hitbox.width - 50
             
-        self.hitbox.y = owner_pos.y + (self.owner.hitbox.height / 2) - (self.hitbox.height / 2)
+        self.hitbox.y = owner_pos.y + (self.owner._hitbox.height / 2) - (self.hitbox.height / 2)
         
 
     def update(self, game):
@@ -32,7 +32,6 @@ class SwordAttack(Attack):
             game._screen.blit(image, self.hitbox.topleft)
 
             for target in self.targets:
-                if not target.is_dead and self.hitbox.colliderect(target.hitbox):
+                if not target.is_dead and self.hitbox.colliderect(target._hitbox):
                     target.take_damage(self.damage)
-                    pygame.draw.rect(game._screen, "red", target.hitbox, 1)  # Debug hitbox
 

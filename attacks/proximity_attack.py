@@ -8,6 +8,6 @@ class ProximityAttack(Attack):
     def update(self, game):
         if self.can_attack():
             for target in self.targets:
-                if self.owner.hitbox.colliderect(target.hitbox):
+                if self.owner._hitbox.colliderect(target._hitbox):
                     target.take_damage(self.damage)
                     self.attack()

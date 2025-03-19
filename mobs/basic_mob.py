@@ -6,7 +6,8 @@ from unit import Unit
 class BasicMob(Unit):
     def __init__(self, screen: pygame.Surface):
         self.screen = screen
-        super().__init__(self.get_random_pos(), speed=self.get_random_speed(), image_path="assets/mobs/basic_mob.png", scale_factor=1.5)
+        mobs = ["orc", "slime"]
+        super().__init__(self.get_random_pos(), speed=self.get_random_speed(), sprites_path=f"assets/{random.choice(mobs)}", scale_factor=1.5)
         
         
     def get_random_speed(self) -> float:
@@ -34,5 +35,6 @@ class BasicMob(Unit):
     # will be called each frame
     def update(self, game):
         self.handle_movement(game._player.get_pos())
+        self.display_health_bar()
         super().update(game)
         
