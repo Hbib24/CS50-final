@@ -2,7 +2,7 @@ import pygame
 from unit import Unit
 
 class Attack():
-    def __init__(self, owner: Unit, targets: list, cooldown=1000, damage=1, duration=500):
+    def __init__(self, owner: Unit, targets: list, cooldown:float=1000, damage:float=1, duration:float=500):
         self.cooldown = cooldown
         self.damage = damage
         self.duration = duration

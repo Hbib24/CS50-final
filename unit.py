@@ -2,7 +2,7 @@ import pygame
 
 # This class is a base class for all units in the game. (Player, enemies, etc.)
 class Unit(pygame.sprite.Sprite):
-    def __init__(self, pos: tuple, sprites_path: str, speed=1, max_health=100, scale_factor: float=1):
+    def __init__(self, pos: tuple, sprites_path: str, speed: float=1, max_health=100, scale_factor: float=1):
         super().__init__()
         self._image_default = pygame.image.load(sprites_path + "/default.png").convert_alpha()
         self._image_hurt = pygame.image.load(sprites_path + "/hurt.png").convert_alpha()
@@ -31,6 +31,12 @@ class Unit(pygame.sprite.Sprite):
         self._hitbox.x += dx * self._speed
         self._hitbox.y += dy * self._speed
 
+    def heal(self, amount = 0):
+        if self._current_health + amount > self._max_health:
+            self._current_health = self._max_health
+        else:
+            self._current_health += amount
+
     def take_damage(self, amount):
         if self._current_health - amount < 0:
             self._current_health = 0
@@ -58,6 +64,11 @@ class Unit(pygame.sprite.Sprite):
     
     def add_attack(self, attack):
         self._attacks.append(attack)
+
+    def find_attack(self, callback):
+        for attack in self._attacks:
+            if callback(attack):
+                return attack
         
 
     @property

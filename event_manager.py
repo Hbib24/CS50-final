@@ -4,6 +4,7 @@ import pygame
 class Event(enum.Enum):
     MOB_KILL = pygame.USEREVENT + 1
     LEVEL_UP = pygame.USEREVENT + 2
+    ABILITY_PICK = pygame.USEREVENT + 3
 
 class EventManager:
     def __init__(self):
