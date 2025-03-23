@@ -10,7 +10,7 @@ class MobManager:
         self.dead_mobs_count = 0
         self.next_spawn_time = 0
 
-    def spawn_basics(self, game):
+    def update(self, game):
         timer = pygame.time.get_ticks()
         self.random_interval = random.randint(100, 500) + timer
 

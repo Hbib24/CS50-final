@@ -15,7 +15,6 @@ class RotatingAttack(Attack):
         self.hitboxes = [self.image.get_rect() for _ in range(shuriken_count)]  # One hitbox per shuriken
 
     def upgrade(self, new_speed=None, extra_shurikens=0):
-        """Upgrades the attack by increasing speed and/or adding more shurikens."""
         if new_speed:
             self.speed = new_speed  # Increase rotation speed
         if extra_shurikens > 0:
@@ -25,7 +24,6 @@ class RotatingAttack(Attack):
             self.shuriken_count += extra_shurikens
 
     def update(self, game):
-        """Moves all shurikens in a circular pattern and applies damage on collision."""
         for i in range(self.shuriken_count):
             self.angles[i] += self.speed  # Rotate each shuriken
             

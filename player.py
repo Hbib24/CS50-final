@@ -1,6 +1,4 @@
-import random
 import pygame
-import json
 
 from event_manager import Event
 from unit import Unit
@@ -39,38 +37,12 @@ class Player(Unit):
             self.levelup_experience += 50
             self.game._event_manager.post_event(Event.LEVEL_UP)
 
-    def get_random_powers(self):
-        power_ups: list = self.get_powers()
-        choices = []
-
-        for _ in range(3):
-            pwr = random.choice(power_ups)
-
-            power_ups.pop(power_ups.index(pwr))
-            choices.append(pwr)
-
-        return choices
 
     def on_level_up(self, _):
-        self.powers = self.get_random_powers()
+        powers = self.game._ability_manager.get_random_powers()
+        self.game._ability_manager.rand_powers = powers
         self.game._level_up = True
-        self.game._ui.level_up(self.powers)
-
-    def pick_ability(self, key):
-        if key == pygame.K_1:
-            self.game._event_manager.post_event(Event.ABILITY_PICK, self.powers[0])
-            self.game._level_up = False
-        elif key == pygame.K_2:
-            self.game._event_manager.post_event(Event.ABILITY_PICK, self.powers[1])
-            self.game._level_up = False
-        elif key == pygame.K_3:
-            self.game._event_manager.post_event(Event.ABILITY_PICK, self.powers[2])
-            self.game._level_up = False
-    
-                
-    def get_powers(self):
-        with open("assets/ui/power_ups.json", "r") as file:
-            return json.load(file)
+        self.game._ui.level_up(powers)
                     
     # will be called each frame
     def update(self, game):

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "aoe",
+    "name": "Area of Effect",
+    "description": "Damage enemies that\nenter the area\naround the player",
+    "type": "ability"
+  },
+  {
+    "id": "shuriken",
+    "name": "Shuriken",
+    "description": "Shuriken will circle\naround the player\nand deal damage\nto enemies",
+    "type": "ability"
+  }
+]

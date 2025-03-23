@@ -1,0 +1,32 @@
+[
+  {
+    "id": "swd_dmg",
+    "name": "Sword Damage",
+    "description": "Increases the\ndamage of the\nsword by 2%",
+    "type": "power_up"
+  },
+  {
+    "id": "swd_cd",
+    "name": "Sword Cooldown",
+    "description": "Decreases the\ncooldown of the\nsword by 2%",
+    "type": "power_up"
+  },
+  {
+    "id": "swd_dur",
+    "name": "Sword Duration",
+    "description": "Increases the\nduration of the\nsword by 2%",
+    "type": "power_up"
+  },
+  {
+    "id": "heal",
+    "name": "Heal",
+    "description": "Heal for 20 hp",
+    "type": "power_up"
+  },
+  {
+    "id": "speed",
+    "name": "Speed",
+    "description": "Increases the\nmovement speed\nby 2%",
+    "type": "power_up"
+  }
+]

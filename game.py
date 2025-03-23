@@ -39,7 +39,7 @@ class Game:
                     break
 
                 if event.type == pygame.KEYDOWN and self._level_up:
-                    self._player.pick_ability(event.key)
+                    self._ability_manager.on_player_pick(event.key)
                 
                 if event.type == pygame.KEYDOWN and not self._level_up: 
                     if event.key == pygame.K_ESCAPE:
@@ -62,7 +62,7 @@ class Game:
                 self._screen.fill("gray")
                 self._ui.backdrop_active = False
                 self._player.update(self)
-                self._mob_manager.spawn_basics(self)
+                self._mob_manager.update(self)
                 self._ui.display_game_ui(self)
 
 

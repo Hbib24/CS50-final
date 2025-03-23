@@ -69,7 +69,13 @@ class Unit(pygame.sprite.Sprite):
         for attack in self._attacks:
             if callback(attack):
                 return attack
-        
+    
+    def has_attack(self, callback):
+        for attack in self._attacks:
+            if callback(attack):
+                return True
+            
+        return False
 
     @property
     def is_dead(self):

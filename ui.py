@@ -48,25 +48,38 @@ class UI:
         center = (self.screen_width // 2, self.screen_height // 2)
         self.backdrop()
 
+        self.pop_up("Level Up!", width=820, height=40, pos=(center[0], center[1] - 230))
+
         offset = 0
         for i, pwr in enumerate(powers):
-            start = center[0] - 270 + offset
+            start = center[0] - 300 + offset
+            border_color = (40, 40, 40)
+            is_ability = pwr.get("type") == "ability"
+            if is_ability:
+                border_color = (255, 200, 0)
             
-            rect = self.pop_up(pwr.get("name"), width=280, pos=(start, center[1]))
+            rect = self.pop_up(pwr.get("name"), width=280, pos=(start, center[1]), border_color=border_color)
             self.text(pwr.get("description"), pos=(start - (rect.width // 2) + 20, center[1] - 50))
             self.text(f"Press {i + 1}", pos=(start - 45, center[1] + (rect.height // 2) - 50))
+
+            if is_ability:
+                font = pygame.font.FontType("assets/ui/monogram.ttf", 25)
+                txt = font.render("New Attack", True, (255, 200, 0))
+                self.screen.blit(txt, (center[0] - txt.get_width() // 2, center[1] - 120))
+
             offset += 300
         
-    def pop_up(self, title, width=400, height=350, pos: tuple=None):
+    def pop_up(self, title, width=400, height=350, pos: tuple=None, border_color: tuple=None):
         self.backdrop()
         
         center = (self.screen_width // 2, self.screen_height // 2)
         pos = pos or center
-        pygame.draw.rect(self.screen, (40, 40, 40),(pos[0] - width // 2 - 3, pos[1] - height // 2 - 3, width + 6, height + 6), border_radius=5)
+        border_color = border_color or (40, 40, 40)
+        pygame.draw.rect(self.screen, border_color,(pos[0] - width // 2 - 3, pos[1] - height // 2 - 3, width + 6, height + 6), border_radius=5)
         rect = pygame.draw.rect(self.screen, (80, 80, 80),(pos[0] - width // 2, pos[1] - height // 2, width, height), border_radius=5)
         title = self.title_font.render(f"{title.title()}", True, (255, 255, 255))
         
-        self.screen.blit(title, (pos[0] - (title.get_width() // 2), pos[1] - height // 2 + 20))
+        self.screen.blit(title, (pos[0] - (title.get_width() // 2), pos[1] - height // 2 + height * 0.05))
         return rect
 
     def text(self, str, size=35, pos=None):
