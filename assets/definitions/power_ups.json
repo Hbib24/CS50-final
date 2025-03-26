@@ -6,6 +6,30 @@
     "type": "power_up"
   },
   {
+    "id": "shuriken_dmg",
+    "name": "Shuriken Damage",
+    "description": "Increases the\ndamage of the\nshuriken by 2%",
+    "type": "power_up"
+  },
+  {
+    "id": "aoe_dmg",
+    "name": "Area Damage",
+    "description": "Increases the\ndamage of the\narea by 2%",
+    "type": "power_up"
+  },
+  {
+    "id": "shuriken_nb",
+    "name": "+1 Shuriken",
+    "description": "Increases the\nnumber of\nshurikens by 1",
+    "type": "power_up"
+  },
+  {
+    "id": "aoe_radius",
+    "name": "+ Area Radius",
+    "description": "Increases the\nradius of\nthe area by 10%",
+    "type": "power_up"
+  },
+  {
     "id": "swd_cd",
     "name": "Sword Cooldown",
     "description": "Decreases the\ncooldown of the\nsword by 2%",
@@ -21,6 +45,12 @@
     "id": "heal",
     "name": "Heal",
     "description": "Heal for 20 hp",
+    "type": "power_up"
+  },
+  {
+    "id": "max_hp",
+    "name": "Max Health",
+    "description": "Increase maximum\nhealth by 15",
     "type": "power_up"
   },
   {

@@ -29,7 +29,7 @@ class Player(Unit):
             self.move(0, 1)
             
     def gain_experience(self, _):
-        self.experience += 100
+        self.experience += 20
         
         if self.experience >= self.levelup_experience:
             self.level += 1

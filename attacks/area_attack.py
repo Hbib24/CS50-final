@@ -9,6 +9,9 @@ class AreaAttack(Attack):
         self.radius = radius 
         self.hitbox = pygame.Rect(0, 0, radius * 2, radius * 2)
         
+    def increase_radius(self, amount):
+        self.radius += amount
+        self.hitbox = pygame.Rect(0, 0, self.radius * 2, self.radius * 2)
         
     def update(self, game):
         self.hitbox.center = self.owner._hitbox.center

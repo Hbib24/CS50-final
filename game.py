@@ -10,7 +10,7 @@ class Game:
     def __init__(self, fullscreen=False):
         # pygame setup
         pygame.init()
-        self._screen = pygame.display.set_mode((1280, 720))
+        self._screen = pygame.display.set_mode((1280, 720), flags=pygame.FULLSCREEN if fullscreen else 0)
         self._clock = pygame.time.Clock()
         self._running = True
         self.init()
@@ -64,12 +64,12 @@ class Game:
                 self._player.update(self)
                 self._mob_manager.update(self)
                 self._ui.display_game_ui(self)
+                self._timer += 1 / 60
 
 
 
             # flip() the display to put your work on screen
             pygame.display.flip()
-            self._timer += 1 / 60
             self._dt = self._clock.tick(60) / 1000
 
 

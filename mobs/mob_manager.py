@@ -12,7 +12,13 @@ class MobManager:
 
     def update(self, game):
         timer = pygame.time.get_ticks()
-        self.random_interval = random.randint(100, 500) + timer
+        max_interval = 1000
+        if game._player.level > 5:
+            max_interval = 500
+        elif game._player.level > 10:
+            max_interval = 250
+            
+        self.random_interval = random.randint(100, max_interval) + timer
 
         if timer >= self.next_spawn_time:
             mob = BasicMob(game._screen)

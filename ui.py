@@ -101,8 +101,7 @@ class UI:
         self.screen.blit(score, (pos[0] + 45, pos[1]))
 
     def display_time(self, pos: tuple):
-        elapsed_time = pygame.time.get_ticks() // 1000
-        time = self.font.render(f"{self.get_formatted_time(elapsed_time)}", True, (255, 255, 255))
+        time = self.font.render(f"{self.get_formatted_time(self.game._timer)}", True, (255, 255, 255))
 
         self.screen.blit(self.time_icon, pos)
         self.screen.blit(time, (pos[0] + 45, pos[1]))

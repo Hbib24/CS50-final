@@ -3,16 +3,22 @@ import json
 import random
 
 import pygame
+from attacks.area_attack import AreaAttack
 from attacks.rotating_attack import RotatingAttack
 from attacks.sword_attack import SwordAttack
 from event_manager import Event
 
 class PowerUps(enum.Enum):
     HEAL = "heal"
+    MAX_HEALTH = "max_hp"
     SPEED = "speed"
     SWD_DMG = "swd_dmg"
     SWD_CD = "swd_cd"
     SWD_DUR = "swd_dur"
+    SHURIKEN_DMG = "shuriken_dmg"
+    SHURIKEN_NB = "shuriken_nb"
+    AOE_DMG = "aoe_dmg"
+    AOE_RADIUS = "aoe_radius"
 
 class Abilities(enum.Enum):
     AOE = "aoe"
@@ -33,6 +39,9 @@ class AbilityManager:
         match ability_id:
             case PowerUps.HEAL.value:
                 self.game._player.heal(20)
+            case PowerUps.MAX_HEALTH.value:
+                self.game._player._max_health += 15
+                self.game._player.heal(15)
             case PowerUps.SPEED.value:
                 self.game._player._speed += self.game._player._speed * 0.02
             case PowerUps.SWD_DMG.value:
@@ -46,6 +55,20 @@ class AbilityManager:
                 attack.duration -= attack.duration * 0.02
             case Abilities.SHURIKEN.value:
                 self.game._player.add_attack(RotatingAttack(self.game._player, self.game._mob_manager.active_mobs.copy()))
+            case Abilities.AOE.value:
+                self.game._player.add_attack(AreaAttack(self.game._player, self.game._mob_manager.active_mobs.copy()))
+            case PowerUps.SHURIKEN_DMG.value:
+                attack = self.game._player.find_attack(lambda attack: isinstance(attack, RotatingAttack))
+                attack.damage += attack.damage * 0.02
+            case PowerUps.SHURIKEN_NB.value:
+                attack = self.game._player.find_attack(lambda attack: isinstance(attack, RotatingAttack))
+                attack.upgrade(extra_shurikens=1)
+            case PowerUps.AOE_DMG.value:
+                attack = self.game._player.find_attack(lambda attack: isinstance(attack, AreaAttack))
+                attack.damage += attack.damage * 0.02
+            case PowerUps.AOE_RADIUS.value:
+                attack = self.game._player.find_attack(lambda attack: isinstance(attack, AreaAttack))
+                attack.increase_radius(attack.radius * 0.1)
 
     def on_player_pick(self, key):
         if key == pygame.K_1:
@@ -61,7 +84,20 @@ class AbilityManager:
     def get_random_powers(self):
         choices = []
         power_ups = self.power_ups.copy()
-
+        
+        if not self.game._player.has_attack(lambda attack: isinstance(attack, RotatingAttack)):
+            # if the player doesn't have a shuriken attack, remove the shuriken power ups
+            power_ups = list(filter(lambda x: not x.get("id").startswith("shuriken") and x.get("type") == "power_up", power_ups))
+        else:
+            attack = self.game._player.find_attack(lambda attack: isinstance(attack, RotatingAttack))
+            if attack.shuriken_count == 5:
+                power_ups = list(filter(lambda x: not x.get("id") == "shuriken_nb", power_ups))
+                
+        if not self.game._player.has_attack(lambda attack: isinstance(attack, AreaAttack)):
+            power_ups = list(filter(lambda x: not x.get("id").startswith("aoe") and x.get("type") == "power_up", power_ups))
+        else:
+            ...
+                 
         for _ in range(3):
             pwr = random.choice(power_ups)
 
@@ -70,6 +106,9 @@ class AbilityManager:
             
         if self.game._player.level >= 5 and not self.game._player.has_attack(lambda attack: isinstance(attack, RotatingAttack)):
             choices[1] = list(filter(lambda x: x.get("id") == "shuriken", self.abilities))[0]
+            
+        if self.game._player.level >= 10 and not self.game._player.has_attack(lambda attack: isinstance(attack, AreaAttack)):
+            choices[1] = list(filter(lambda x: x.get("id") == "aoe", self.abilities))[0]
 
         return choices
     
