@@ -4,14 +4,21 @@ import random
 from unit import Unit
 
 class BasicMob(Unit):
-    def __init__(self, screen: pygame.Surface):
+    def __init__(self, screen: pygame.Surface, max_health=100, sprites_path=None, scale_factor=1.5, speed=None):
         self.screen = screen
-        mobs = ["orc", "slime"]
-        super().__init__(self.get_random_pos(), speed=self.get_random_speed(), sprites_path=f"assets/{random.choice(mobs)}", scale_factor=1.5)
+
+        if not sprites_path:
+            mobs = ["orc", "slime"]
+            sprites_path = f"assets/{random.choice(mobs)}"
+        
+        if not speed:
+            speed = self.get_random_speed()
+
+        super().__init__(self.get_random_pos(), speed=speed, sprites_path=sprites_path, scale_factor=scale_factor, max_health=max_health)
         
         
     def get_random_speed(self) -> float:
-        return random.uniform(1.5, 2.5)
+        return random.uniform(1.6, 2.2)
         
     def get_random_pos(self) -> tuple:
         edges = ["top", "right", "bottom", "left"]

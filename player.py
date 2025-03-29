@@ -28,8 +28,12 @@ class Player(Unit):
         if keys[pygame.K_DOWN]:
             self.move(0, 1)
             
-    def gain_experience(self, _):
-        self.experience += 20
+    def gain_experience(self, mob):
+        match mob.data.get("type"):
+            case "basic":
+                self.experience += 20
+            case "special":
+                self.experience += 50
         
         if self.experience >= self.levelup_experience:
             self.level += 1
