@@ -6,7 +6,7 @@ from unit import Unit
 class Player(Unit):
     def __init__(self, game):
         pos = (game._screen.get_width() // 2, game._screen.get_height() // 2) # center of the screen
-        super().__init__(pos, speed=1.5, sprites_path="assets/player", scale_factor=1.5)
+        super().__init__(pos, speed=1.6, sprites_path="assets/player", scale_factor=1.5)
         
         self.screen = game._screen
         self.game = game

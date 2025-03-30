@@ -54,9 +54,11 @@ class AbilityManager:
                 attack = self.game._player.find_attack(lambda attack: isinstance(attack, SwordAttack))
                 attack.duration -= attack.duration * 0.02
             case Abilities.SHURIKEN.value:
-                self.game._player.add_attack(RotatingAttack(self.game._player, self.game._mob_manager.active_mobs.copy()))
+                targets = list(map(lambda mob: mob.get("instance"), self.game._mob_manager.active_mobs.copy()))
+                self.game._player.add_attack(RotatingAttack(self.game._player, targets))
             case Abilities.AOE.value:
-                self.game._player.add_attack(AreaAttack(self.game._player, self.game._mob_manager.active_mobs.copy()))
+                targets = list(map(lambda mob: mob.get("instance"), self.game._mob_manager.active_mobs.copy()))
+                self.game._player.add_attack(AreaAttack(self.game._player, targets))
             case PowerUps.SHURIKEN_DMG.value:
                 attack = self.game._player.find_attack(lambda attack: isinstance(attack, RotatingAttack))
                 attack.damage += attack.damage * 0.02
