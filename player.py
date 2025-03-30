@@ -6,7 +6,7 @@ from unit import Unit
 class Player(Unit):
     def __init__(self, game):
         pos = (game._screen.get_width() // 2, game._screen.get_height() // 2) # center of the screen
-        super().__init__(pos, speed=3, sprites_path="assets/player", scale_factor=1.5)
+        super().__init__(pos, speed=1.5, sprites_path="assets/player", scale_factor=1.5)
         
         self.screen = game._screen
         self.game = game
@@ -20,13 +20,15 @@ class Player(Unit):
     def handle_movement(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            self.move(-1, 0)
+            self.game._event_manager.post_event(Event.PLAYER_MOVE, (-1, 0))
+            self.flip(False)
         if keys[pygame.K_RIGHT]:
-            self.move(1, 0)
+            self.game._event_manager.post_event(Event.PLAYER_MOVE, (1, 0))
+            self.flip()
         if keys[pygame.K_UP]:
-            self.move(0, -1)
+            self.game._event_manager.post_event(Event.PLAYER_MOVE, (0, -1))
         if keys[pygame.K_DOWN]:
-            self.move(0, 1)
+            self.game._event_manager.post_event(Event.PLAYER_MOVE, (0, 1))
             
     def gain_experience(self, mob):
         match mob.data.get("type"):

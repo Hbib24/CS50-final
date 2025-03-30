@@ -12,6 +12,19 @@ class MobManager:
         self.next_spawn_time = 0
         self.next_special_spawn_time = 60000
 
+    def spawn(self, type, game):
+        match type:
+            case "basic":
+                mob = BasicMob(game)
+            case "special":
+                mob = SpecialMob(game)
+
+        mob.add_attack(ProximityAttack(mob, [game._player]))
+        self.active_mobs.append({"instance": mob, "type": type})
+
+        for attack in game._player._attacks:
+                attack.add_target(mob)
+
     def update(self, game):
         timer = pygame.time.get_ticks()
         min_interval = 1000
@@ -26,24 +39,12 @@ class MobManager:
         random_interval = random.randint(min_interval, max_interval) 
 
         if timer >= self.next_spawn_time:
-            mob = BasicMob(game._screen)
-            mob.add_attack(ProximityAttack(mob, [game._player]))
-            self.active_mobs.append({"instance": mob, "type": "basic"})
-
-            for attack in game._player._attacks:
-                attack.add_target(mob)
-
+            self.spawn("basic", game)
             self.next_spawn_time = timer + random_interval
         
         if timer >= self.next_special_spawn_time:
-            mob = SpecialMob(game._screen)
-            mob.add_attack(ProximityAttack(mob, [game._player]))
-            self.active_mobs.append({"instance": mob, "type": "special"})
-
-            for attack in game._player._attacks:
-                attack.add_target(mob)
-
-            self.next_special_spawn_time = timer + random.randint(30000, 50000) 
+            self.spawn("special", game)
+            self.next_special_spawn_time = timer + random.randint(30000, 50000)
 
         for i, mob in reversed(list(enumerate(self.active_mobs))):
             instance = mob.get("instance")

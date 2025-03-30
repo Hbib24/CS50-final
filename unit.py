@@ -24,13 +24,18 @@ class Unit(pygame.sprite.Sprite):
 
     def move(self, dx, dy):
         if dx > 0:
-            self._image_flipped = True
+            self.flip()
         elif dx < 0:
-            self._image_flipped = False
+            self.flip(False)
         
         self._hitbox.x += dx * self._speed
         self._hitbox.y += dy * self._speed
 
+        return self.get_pos()
+    
+    def flip(self, right = True):
+        self._image_flipped = right
+        
     def heal(self, amount = 0):
         if self._current_health + amount > self._max_health:
             self._current_health = self._max_health

@@ -2,10 +2,12 @@ import pygame
 import random
 
 from unit import Unit
+from event_manager import Event
 
 class BasicMob(Unit):
-    def __init__(self, screen: pygame.Surface, max_health=100, sprites_path=None, scale_factor=1.5, speed=None):
-        self.screen = screen
+    def __init__(self, game, max_health=100, sprites_path=None, scale_factor=1.5, speed=None):
+        self.screen = game._screen
+        self.game = game
 
         if not sprites_path:
             mobs = ["orc", "slime"]
@@ -15,10 +17,15 @@ class BasicMob(Unit):
             speed = self.get_random_speed()
 
         super().__init__(self.get_random_pos(), speed=speed, sprites_path=sprites_path, scale_factor=scale_factor, max_health=max_health)
-        
+        game._event_manager.listen_to(Event.PLAYER_MOVE, self.on_player_move)
+
+    def on_player_move(self, distance):
+        x, y = distance.data
+        # move away or closer to the player
+        self.move(-x * self.game._player._speed, -y * self.game._player._speed)
         
     def get_random_speed(self) -> float:
-        return random.uniform(1.6, 2.2)
+        return random.uniform(1, 1.4)
         
     def get_random_pos(self) -> tuple:
         edges = ["top", "right", "bottom", "left"]
