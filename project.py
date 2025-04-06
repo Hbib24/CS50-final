@@ -1,6 +1,6 @@
 import argparse
 
-from game import Game
+from src.game import Game
 
 def main():
     parser = argparse.ArgumentParser(description="Run game")
