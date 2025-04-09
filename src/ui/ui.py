@@ -24,6 +24,8 @@ class UI:
         self.heart_icon = pygame.image.load("assets/ui/icon_heart.png").convert_alpha()
         self.heart_icon = pygame.transform.smoothscale(self.heart_icon, (35, 35))
 
+        self.game_logo = pygame.image.load("assets/ui/logo.png").convert_alpha()
+
         self.start_btn = Button(game, "Start", self.game.start)
         self.quit_btn = Button(game, "Quit", pygame.quit)
         center = (self.screen_width // 2, self.screen_height // 2)
@@ -90,7 +92,7 @@ class UI:
         self.screen.blit(title, (pos[0] - (title.get_width() // 2), pos[1] - height // 2 + height * 0.05))
         return rect
 
-    def text(self, str, size=35, pos=None):
+    def text(self, str, size=35, pos=None, color=(255, 255, 255)):
         center = (self.screen_width // 2, self.screen_height // 2)
         font = pygame.font.FontType("assets/ui/monogram.ttf", size)
         pos = pos or center
@@ -98,7 +100,7 @@ class UI:
         lines = str.split("\n")
         y = pos[1]
         for line in lines:
-            txt = font.render(f"{line}", True, (255, 255, 255))
+            txt = font.render(f"{line}", True, color)
             self.screen.blit(txt, (pos[0], y))
 
             y += txt.get_height()
@@ -147,21 +149,34 @@ class UI:
     def display_main_menu(self):
         center = (self.screen_width // 2, self.screen_height // 2)
         width, height = self.game._screen.get_size()
-
+        
         self.game._screen.fill("#3892C6")
+        self.screen.blit(self.game_logo, (260, 100))
         self.start_btn.set_rect((300, 250, 200, 60)).draw(self.screen)
         self.quit_btn.set_rect((300, 320, 200, 60)).draw(self.screen)
         scoreboard = self.pop_up("World Scoreboard", width=width - width // 1.7, height=height - height // 4, pos=(center[0] + 300, center[1]))
-        self.text("#   Player     Score   Time   Date", pos=(scoreboard.x + 10, scoreboard.y + 100))
+        self.text("#  Player    Score  Playtime  Country", pos=(scoreboard.x + 10, scoreboard.y + 100))
 
-        scores = self.game._firestore.get_scores()
-        if len(scores) == 0:
+        scores = self.game._firestore.get_scores() if not self.game._offline else []
+        if self.game._offline:
+            self.text("Offline mode", pos=(scoreboard.x + scoreboard.width / 2 - 80, scoreboard.height // 2), color=(255, 0, 0))
+        elif len(scores) == 0:
             self.text("No scores yet", pos=(scoreboard.x + scoreboard.width / 2 - 80, scoreboard.height // 2))
 
         for i, score in enumerate(scores):
             rect = pygame.draw.rect(self.screen, (40, 40, 40), (scoreboard.x, scoreboard.y + 150 + (i * 50), scoreboard.width, 50))
             pygame.draw.rect(self.screen, (100, 100, 100), (scoreboard.x, rect.y, scoreboard.width, 3))
-            self.text(f"{i + 1}   {score.get('name'):<10}   {score.get('score')}   {score.get('play_time')}   {score.get('created_at')}", pos=(scoreboard.x + 10, scoreboard.y + 160 + (i * 50)))
+            self.text(f"{i + 1}  {score.get('name'):<10}  {score.get('score'):<4}  {self.get_formatted_time(score.get('play_time')):<8}  {score.get('country')}", pos=(scoreboard.x + 10, scoreboard.y + 160 + (i * 50)))
+    
+    def display_game_over(self):
+        center = (self.screen_width // 2, self.screen_height // 2)
+        self.pop_up("game over")
+        self.display_score(self.game._mob_manager.dead_mobs_count, (center[0]- 50, center[1] - 50), self.game)
+        self.display_time((center[0]- 50, center[1]))
+        self.display_controls()
+
+    def display_game_version(self):
+        self.text(f"Version: {self.game.VERSION}", 25, (10, self.screen_height - 25), (200, 200, 200))
 
     def prompt_player_name(self):
         self.name_input.draw(self.screen)
