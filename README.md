@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/ui/logo.png" alt="PyRogue Logo" width="200">
+  <img src="assets/ui/logo.png" alt="PyRogue Logo" width="300">
 </p>
 
 # PyRogue
