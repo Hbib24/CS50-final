@@ -31,11 +31,21 @@ PyRogue is a 2D rogue-like game built using Python and Pygame. The game features
    git clone <repository-url>
    cd CS50-Final
    ```
-2. Install dependencies::
+2. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-3. Ensure the Firebase credentials file (pygame-89e86-firebase-adminsdk-fbsvc-25d3a65e98.json) is in the root directory. If you have problems with firebase authentication, you can turn on offline mode.
+3. Decript the firebase adminsdk To use the online features:
+
+   1. Download openssl from https://slproweb.com/products/Win32OpenSSL.html
+
+   2. Add OpenSSL to PATH (If Not Done Automatically) so that your system will recognize the openssl command
+
+   3. Decript the file:
+
+   ```bash
+   openssl enc -aes-256-cbc -d -in firebase-adminsdk.json.enc -out firebase-adminsdk.json -k pyrogue
+   ```
 
 ### Usage
 
