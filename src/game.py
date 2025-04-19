@@ -83,7 +83,7 @@ class Game:
                             self._menu = True
 
             # ================== RENDER YOUR GAME HERE ================== #
-            if not self._player_name:
+            if not self._player_name and not self._offline:
                 self._ui.prompt_player_name()
             else:
                 if self._menu:
