@@ -93,6 +93,10 @@ CS50 Final/
 - Firebase Admin SDK https://firebase.google.com/docs/admin/setup
 - Requests https://requests.readthedocs.io/en/latest/
 
+### Dependencies
+
+All visual assets are free to use downloaded from Itch.io, music was generated with AI using suno.com
+
 ### Acknowledgments
 
 This project was developed as part of the CS50 Final Project.
