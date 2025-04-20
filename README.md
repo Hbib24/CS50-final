@@ -6,14 +6,14 @@
 
 PyRogue is a 2D rogue-like game built using Python and Pygame. The game features procedurally generated environments, a leveling system, various abilities, and online scoreboards powered by Firebase.
 
+Demo: https://www.youtube.com/watch?v=SbFXv9QtwzA
+
 ## Features
 
 - **Procedurally Generated World**: Dynamic backgrounds and environments.
 - **Leveling System**: Gain experience by defeating mobs and level up to unlock new abilities and power-ups.
 - **Abilities and Power-Ups**: Choose from a variety of abilities and upgrades to enhance your gameplay.
 - **Online Scoreboard**: Save and view high scores globally using Firebase Firestore.
-- **Offline Mode**: Play without online features if desired.
-- **Customizable Controls**: Use arrow keys for movement and other keys for interactions.
 
 ---
 
