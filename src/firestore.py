@@ -8,7 +8,7 @@ from firebase_admin import firestore
 
 class Firestore:
     def __init__(self, game):
-        cred = credentials.Certificate("pygame-89e86-firebase-adminsdk-fbsvc-25d3a65e98.json")
+        cred = credentials.Certificate("firebase-adminsdk.json")
         firebase_admin.initialize_app(cred)
 
         self.db = firestore.client()

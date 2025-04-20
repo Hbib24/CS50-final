@@ -1,3 +1,4 @@
+import csv
 import pygame
 
 from src.ability_manager import AbilityManager
@@ -13,7 +14,7 @@ class Game:
     TITLE = "PyRogue"
     VERSION = "0.0.1"
 
-    def __init__(self, fullscreen=False, offline=False):
+    def __init__(self, fullscreen=False, offline=False, player_name=None):
         # pygame setup
         pygame.init()
         pygame.display.set_icon(pygame.image.load("assets/player/default.png"))
@@ -28,7 +29,7 @@ class Game:
         self._world_start = pygame.Vector2(-(self._world_width / 2) + self._screen.get_width() / 2, -(self._world_height / 2) + self._screen.get_height() / 2)
         self._world_end = pygame.Vector2(self._world_width / 2 - self._screen.get_width() / 2, self._world_height / 2 - self._screen.get_height() / 2)
         self._firestore = Firestore(self) if not self._offline else None
-        self._player_name = None
+        self._player_name = player_name
 
         self._menu = True
         self.init()
@@ -90,8 +91,7 @@ class Game:
                     self._ui.display_main_menu()
                 elif self._over:
                     self._ui.display_game_over()
-                    if not self._offline:
-                        self.save_score()
+                    self.save_score()
                 elif not self._paused and not self._level_up:
                     self._ui.backdrop_active = False
                     self._background.update()
@@ -118,8 +118,25 @@ class Game:
 
     def save_score(self):
         if not self._scored_saved:
-            self._firestore.save_score(self._player_name, self._mob_manager.dead_mobs_count, self._timer, self._player.level)
+            if self._offline:
+                self.save_score_locally(self._player_name, self._mob_manager.dead_mobs_count, self._timer, self._player.level)
+            else:
+                self._firestore.save_score(self._player_name, self._mob_manager.dead_mobs_count, self._timer, self._player.level)
+
             self._scored_saved = True
+    
+    def save_score_locally(self, name: str, score: int, play_time, level: int):
+        # save score in a csv file, create the file if it doesn't exist
+        try:
+            with open("scores.csv", "a", newline="") as f:
+                writer = csv.writer(f)
+                writer.writerow([name, score, play_time, level])
+        except FileNotFoundError:
+            with open("scores.csv", "w", newline="") as f:
+                writer = csv.writer(f)
+                writer.writerow(["name", "score", "play_time", "level"])
+                writer.writerow([name, score, play_time, level])
+
 
     def pause(self):
         self._paused = not self._paused

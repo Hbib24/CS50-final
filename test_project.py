@@ -9,6 +9,49 @@ from src.mobs.mob_manager import MobManager
 from src.game import Game 
 from src.player import Player
 from src.audio_manager import AudioManager
+from project import get_user_name, is_name_invalid, defineArgs
+from unittest.mock import patch
+import argparse
+
+def test_is_name_invalid():
+    assert is_name_invalid("") is True
+    assert is_name_invalid("  ") is True
+    assert is_name_invalid("a") is True
+    assert is_name_invalid("ab") is True
+    assert is_name_invalid("abcdefghijk") is True
+    assert is_name_invalid("abc") is False
+    assert is_name_invalid("abcdefghij") is False
+    assert is_name_invalid("validname") is False
+
+def test_defineArgs():
+    with patch('argparse.ArgumentParser.parse_args', return_value=argparse.Namespace(fullscreen=False, offline=False)):
+        args = defineArgs()
+        assert args.fullscreen is False
+        assert args.offline is False
+
+    with patch('argparse.ArgumentParser.parse_args', return_value=argparse.Namespace(fullscreen=True, offline=False)):
+        args = defineArgs()
+        assert args.fullscreen is True
+        assert args.offline is False
+
+    with patch('argparse.ArgumentParser.parse_args', return_value=argparse.Namespace(fullscreen=False, offline=True)):
+        args = defineArgs()
+        assert args.fullscreen is False
+        assert args.offline is True
+
+    with patch('argparse.ArgumentParser.parse_args', return_value=argparse.Namespace(fullscreen=True, offline=True)):
+        args = defineArgs()
+        assert args.fullscreen is True
+        assert args.offline is True
+
+def test_get_user_name():
+    with pytest.raises(SystemExit):
+        with patch('builtins.input', side_effect=["", "  ", "a", "ab", "abcdefghijk"]):
+            get_user_name()
+
+    with patch('builtins.input', side_effect=["abc"]):
+        name = get_user_name()
+        assert name == "abc"
 
 def test_game_initialization():
     game = Game(offline=True)
@@ -81,3 +124,5 @@ def test_abilities():
 
     game._ability_manager.pick_ability(pygame.event.Event(Event.ABILITY_PICK.value, data=dict(abilities[1])))
     assert game._player.has_attack(lambda attack: isinstance(attack, RotatingAttack)) is True
+
+
